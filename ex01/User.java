@@ -1,8 +1,8 @@
-package ex00;
+package ex01;
 
 public class User {
     // fields
-    private int             id; // user ID generation logic is beyond the scoop of this exercise
+    private final int       id; // user ID generation logic is beyond the scoop of this exercise
     private final String    name;
     private double          balance;
 
@@ -16,6 +16,7 @@ public class User {
             throw new IllegalArgumentException("Initial balance of a user cannot be negative");
         }
 
+        this.id = UserIdsGenerator.getInstance().generateId();
         this.balance = balance;
         this.name = name;
     }

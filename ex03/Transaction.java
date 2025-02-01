@@ -1,4 +1,4 @@
-package ex00;
+package ex03;
 import java.util.UUID;
 
 enum TransactionType {
@@ -12,6 +12,9 @@ public class Transaction {
     private final User            sender;
     private final double          transferAmount;
     private final TransactionType transferCategory;
+
+    // next field referring to the next transaction
+    private Transaction           next;
 
     public Transaction(TransactionType transferCategory, double transferAmount, User sender, User recipient) {
         if (sender == null || recipient == null) {
