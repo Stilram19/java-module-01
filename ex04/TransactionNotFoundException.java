@@ -1,7 +1,6 @@
-package ex03;
+package ex04;
 
-// unchecked exception (extends RuntimeException)
-public class TransactionNotFoundException extends RuntimeException {
+class TransactionNotFoundException extends RuntimeException {
     TransactionNotFoundException() {
         super("transaction not found!");
     }

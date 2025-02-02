@@ -1,4 +1,4 @@
-package ex03;
+package ex04;
 import java.util.UUID;
 
 enum TransactionType {
@@ -6,7 +6,7 @@ enum TransactionType {
     CREDIT;
 }
 
-public class Transaction {
+class Transaction {
     private final String          identifier;
     private final User            recipient;
     private final User            sender;

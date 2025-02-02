@@ -24,6 +24,7 @@ public class User {
         this.balance = balance;
         this.name = name;
         this.transactions = transactions; // using dependency injection
+        this.id = UserIdsGenerator.getInstance().generateId();
     }
 
     // getters
@@ -37,6 +38,30 @@ public class User {
 
     public String getName() {
         return (name);
+    }
+
+    public TransactionsList getTransactions() {
+        return (this.transactions);
+    }
+
+    public void deposit(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be positive");
+        }
+
+        this.balance += amount;
+    }
+
+    public void withdraw(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Withdrawal amount must be positive");
+        }
+
+        if (amount > this.balance) {
+            throw new IllegalArgumentException("Insufficient funds. Available balance: " + this.balance);
+        }
+
+        this.balance -= amount;
     }
 
     @Override

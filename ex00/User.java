@@ -33,6 +33,26 @@ public class User {
         return (name);
     }
 
+    public void deposit(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be positive");
+        }
+
+        this.balance += amount;
+    }
+
+    public void withdraw(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Withdrawal amount must be positive");
+        }
+
+        if (amount > this.balance) {
+            throw new IllegalArgumentException("Insufficient funds. Available balance: " + this.balance);
+        }
+
+        this.balance -= amount;
+    }
+
     @Override
     public String toString() {
         return String.format("User[ID: %d, Name: %s, Balance: %.2f]", id, name, balance);

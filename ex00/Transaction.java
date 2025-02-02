@@ -32,6 +32,14 @@ public class Transaction {
         this.recipient = recipient; // reference assignment (no deep copies)
         this.sender = sender;
         this.identifier = UUID.randomUUID().toString(); // create a universal unique identifier for the transaction
+
+        // update balance of recipient
+        if (transferCategory == TransactionType.DEBIT) {
+            this.recipient.deposit(transferAmount);
+            return ;
+        }
+        transferAmount *= -1; // to become positive
+        this.sender.withdraw(transferAmount);
     }
 
     public String getIdentifier() {

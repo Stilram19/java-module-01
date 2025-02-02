@@ -1,7 +1,6 @@
-package ex02;
+package ex04;
 
-// unchecked exception (extends RuntimeException)
-public class UserNotFoundException extends RuntimeException {
+class UserNotFoundException extends RuntimeException {
     UserNotFoundException() {
         super("User not found!");
     }
