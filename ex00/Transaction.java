@@ -67,10 +67,10 @@ public class Transaction {
 
     @Override
     public String toString() {
-        String transactionType = transferCategory == TransactionType.CREDIT ? "CREDIT" : "DEBIT";
-        return String.format(
-            "Transaction[ID: %s, Type: %s, amount: %.2f, sender: %s, recipient: %s]", 
-            identifier, transactionType, transferAmount, sender.getName(), recipient.getName()
-        );
+        String direction = transferCategory == TransactionType.CREDIT ? 
+        "To " + recipient.getName() + "(id = " + recipient.getId() + ")" :
+            "From " + sender.getName() + "(id = " + sender.getId() + ")";
+
+        return String.format("%s %.2f with id = %s", direction, transferAmount, identifier);
     }
 }

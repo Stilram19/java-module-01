@@ -1,7 +1,7 @@
-package ex04;
+package ex05;
 
 class TransactionsService {
-    private final UsersList users;
+    UsersList users;
 
     // constructor's dependency injection
     TransactionsService(UsersList users) {
@@ -14,7 +14,7 @@ class TransactionsService {
 
     User addUser(double balance, String name) {
         User newUser = new User(balance, name, new TransactionsLinkedList());
-        users.addUser(newUser);
+        this.users.addUser(newUser);
         return (newUser);
     }
 
@@ -22,14 +22,18 @@ class TransactionsService {
         return (users.getUserById(userId).getBalance());
     }
 
+    String getUserName(int userId) {
+        return (users.getUserById(userId).getName());
+    }
+
     void transfer(int senderId, int receiverId, double amount) {
-        User sender = this.users.getUserById(senderId);
+        User sender = users.getUserById(senderId);
 
         if (sender.getBalance() < amount) {
             throw new IllegalTransactionException("Insufficient funds. Available balance: " + sender.getBalance());
         }
 
-        User receiver = this.users.getUserById(receiverId);
+        User receiver = users.getUserById(receiverId);
         TransactionsList receiverTransactionsList = receiver.getTransactions();
         TransactionsList senderTransactionsList = sender.getTransactions();
 
@@ -45,8 +49,8 @@ class TransactionsService {
         return (this.users.getUserById(userId).getTransactions().toArray());
     }
 
-    void removeTransaction(int userId, String transactionUuid) {
-        this.users.getUserById(userId).getTransactions().removeTransaction(transactionUuid);
+    Transaction removeTransaction(int userId, String transactionUuid) {
+        return (this.users.getUserById(userId).getTransactions().removeTransaction(transactionUuid));
     }
 
     Transaction[] checkTransactionsValidity() {
