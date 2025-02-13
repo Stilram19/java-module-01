@@ -13,7 +13,7 @@ class Transaction {
     private final double          transferAmount;
     private final TransactionType transferCategory;
 
-    public Transaction(TransactionType transferCategory, double transferAmount, User sender, User recipient) {
+    public Transaction(TransactionType transferCategory, double transferAmount, User sender, User recipient, String uuid) {
         if (sender == null || recipient == null) {
             throw new IllegalArgumentException("Sender and recipient cannot be null.");
         }
@@ -31,14 +31,17 @@ class Transaction {
         this.transferAmount = transferAmount;
         this.recipient = recipient; // reference assignment (no deep copies)
         this.sender = sender;
-        this.identifier = UUID.randomUUID().toString(); // create a universal unique identifier for the transaction
+        this.identifier = uuid == null ? UUID.randomUUID().toString() : uuid;
+
+        if (transferAmount < 0) {
+            transferAmount = -transferAmount;
+        }
 
         // update balance of recipient
         if (transferCategory == TransactionType.DEBIT) {
             this.recipient.deposit(transferAmount);
             return ;
         }
-        transferAmount *= -1; // to become positive
         this.sender.withdraw(transferAmount);
     }
 

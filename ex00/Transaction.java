@@ -33,12 +33,15 @@ public class Transaction {
         this.sender = sender;
         this.identifier = UUID.randomUUID().toString(); // create a universal unique identifier for the transaction
 
+        if (transferAmount < 0) {
+            transferAmount = -transferAmount;
+        }
+
         // update balance of recipient
         if (transferCategory == TransactionType.DEBIT) {
             this.recipient.deposit(transferAmount);
             return ;
         }
-        transferAmount *= -1; // to become positive
         this.sender.withdraw(transferAmount);
     }
 
