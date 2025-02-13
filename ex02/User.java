@@ -26,7 +26,7 @@ public class User {
         return (id);
     }
 
-    public double getBlance() {
+    public double getBalance() {
         return (balance);
     }
 

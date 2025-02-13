@@ -19,7 +19,7 @@ class Transaction {
         }
 
         // comparing with == since enums are singletons
-        if (transferCategory == TransactionType.CREDIT && transferAmount > 0) {
+        if (transferCategory == TransactionType.CREDIT && transferAmount >= 0) {
             throw new IllegalArgumentException("transferAmount must be a negative value when Transaction Type is CREDIT.");
         }
 
