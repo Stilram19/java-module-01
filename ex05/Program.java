@@ -15,6 +15,7 @@ public class Program {
             menu.launch();
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
+            displayHelp();
         }
     }
 

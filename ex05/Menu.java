@@ -62,6 +62,7 @@ public class Menu {
                 Command command = takeUsersCommand();
 
                 if (command == Command.NO_COMMAND) {
+                    System.out.println("Invalid command!");
                     continue ;
                 }
                 if (command == Command.FINISH_EXECUTION) {
@@ -92,10 +93,6 @@ public class Menu {
                 }
             } catch (RuntimeException e) {
                 System.err.println(e.getMessage());
-                // clear input buffer
-                if (this.scanner.hasNextLine()) {
-                    this.scanner.nextLine();
-                }
             }
         }
     }
@@ -124,38 +121,42 @@ public class Menu {
     void displayUserBalance() {
         System.out.println("Enter a user ID");
         if (this.scanner.hasNextInt() == false) {
+            // consume input
+            this.scanner.nextLine();
             return ;
         }
         int userId = this.scanner.nextInt();
-        // consume newline if any
-        if (this.scanner.hasNextLine()) {
-            this.scanner.nextLine();
-        }
+        // consume newline
+        this.scanner.nextLine();
+
         System.out.println(this.link.getUserName(userId) + " - " + (int)this.link.getUserBalance(userId));
     }
 
     void performTransfer() {
         System.out.println("Enter a sender ID, a recipient ID, and a transfer amount");
         if (this.scanner.hasNextInt() == false) {
+            // consume input
+            this.scanner.nextLine();
             return ;
         }
         int senderId = this.scanner.nextInt();
 
         if (this.scanner.hasNextInt() == false) {
+            // consume newline
+            this.scanner.nextLine();
             return ;
         }
         int recipientId = this.scanner.nextInt();
 
         if (this.scanner.hasNextInt() == false) {
+            // consume newline
+            this.scanner.nextLine();
             return ;
         }
-
         int transferAmount = this.scanner.nextInt();
-        
-        // consume newline if any
-        if (this.scanner.hasNextLine()) {
-            this.scanner.nextLine();
-        }
+        // consume newline
+        this.scanner.nextLine();
+
         this.link.transfer(senderId, recipientId, transferAmount);
         System.out.println("The transfer is completed");
     }
@@ -163,15 +164,15 @@ public class Menu {
     void displayUserTransactions() {
         System.out.println("Enter a user ID");
         if (this.scanner.hasNextInt() == false) {
+            // consume input
+            this.scanner.nextLine();
             return ;
         }
         int userId = this.scanner.nextInt();
-        Transaction[] transactions = this.link.getUserTransfers(userId);
+        // consume newline
+        this.scanner.nextLine();
 
-        // consume newline if any
-        if (this.scanner.hasNextLine()) {
-            this.scanner.nextLine();
-        }
+        Transaction[] transactions = this.link.getUserTransfers(userId);
 
         for (Transaction transaction : transactions) {
             System.out.println(transaction);
@@ -182,19 +183,21 @@ public class Menu {
         System.out.println("Enter a user ID and a transfer ID");
 
         if (this.scanner.hasNextInt() == false) {
+            // consume newline
+            this.scanner.nextLine();
             return ;
         }
         int userId = this.scanner.nextInt();
 
         if (this.scanner.hasNext() == false) {
+            // consume newline
+            this.scanner.nextLine();
             return ;
         }
         String uuid = this.scanner.next();
 
-        // consume newline if any
-        if (this.scanner.hasNextLine()) {
-            this.scanner.nextLine();
-        }
+        // consume newline
+        this.scanner.nextLine();
 
         Transaction deletedTransaction = this.link.removeTransaction(userId, uuid);
         User otherUser = deletedTransaction.getRecipient().getId() == userId ? deletedTransaction.getSender() : deletedTransaction.getRecipient();
@@ -207,7 +210,7 @@ public class Menu {
         if (amount < 0) {
             amount = -amount;
         }
-        System.out.println(otherUser.getName() + "(id = " + otherUser.getId() + ") " + (int)deletedTransaction.getTransferAmount() + " removed");
+        System.out.println(otherUser.getName() + "(id = " + otherUser.getId() + ") " + (int)amount + " removed");
     }
 
     void checkTransferValidity() {
@@ -218,7 +221,7 @@ public class Menu {
             User sender = unpairedTransaction.getSender();
             User recipient = unpairedTransaction.getRecipient();
 
-            System.out.print(recipient.getName() + "(" + recipient.getId() + ") has an unacknowledged transfer id = ");
+            System.out.print(recipient.getName() + "(id = " + recipient.getId() + ") has an unacknowledged transfer id = ");
             System.out.print(unpairedTransaction.getIdentifier());
             System.out.println("  from " + sender.getName() + "(id = " + sender.getId() + ") for " + (int)unpairedTransaction.getTransferAmount());
         }
@@ -231,14 +234,16 @@ public class Menu {
     private Command takeUsersCommand() {
         displayMenu();
 
-        if (!this.scanner.hasNextInt()) {
+        if (!this.scanner.hasNextLine()) {
             return Command.FINISH_EXECUTION;
         }
-        int command = this.scanner.nextInt();
 
-        // consume newline if any
-        if (this.scanner.hasNextLine()) {
-            this.scanner.nextLine();
+        int command = 0;
+
+        try {
+            command = Integer.parseInt(this.scanner.nextLine());
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Invalid command!");
         }
 
         switch (command) {
